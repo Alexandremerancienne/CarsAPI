@@ -1,17 +1,6 @@
 from django.test import TestCase
-from .models import CarBrand, CarModel, UserCar
+from api.models import CarBrand, CarModel, UserCar
 from accounts.models import CustomUser
-
-
-class CustomUserModelTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        CustomUser.objects.create(username="alex")
-
-    def test_user_content(self):
-        custom_user = CustomUser.objects.get(id=1)
-        expected_user_name = "alex"
-        self.assertEquals(custom_user.username, expected_user_name)
 
 
 class CarBrandModelTest(TestCase):
@@ -60,7 +49,6 @@ class UserCarModelTest(TestCase):
     def test_brand_content(self):
         user_car = UserCar.objects.get(id=1)
         expected_brand_name = "Lada"
-        print(user_car.car_brand)
         self.assertEquals(user_car.car_brand.name, expected_brand_name)
 
     def test_model_content(self):

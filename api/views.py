@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import UserCar, CarBrand, CarModel
@@ -72,6 +72,15 @@ class CarBrandViewSet(viewsets.ModelViewSet):
         IsAuthenticated,
         IsSuperuserOrAdmin,
     )
+
+    def destroy(self, request, pk=None):
+        brand = get_object_or_404(CarBrand, id=pk)
+        queryset = CarModel.objects.all().filter(car_brand=brand)
+        for model in queryset:
+            self.check_object_permissions(request, model)
+            self.perform_destroy(model)
+        self.perform_destroy(brand)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class CarModelViewSet(viewsets.ModelViewSet):
