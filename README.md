@@ -83,6 +83,6 @@ You can search and filter models with the following endpoint: http://localhost:8
 * Endpoints can be tested with tools such as Postman or cURL.
 
 # Documentation (Swagger/Redoc)
-* The documentation of the API is available at the following endpoints (make sure the local server is running):
+* The documentation of the API is available at the following endpoints (make sure the local server is running and that you are authenticated):
 * Swagger: [http://localhost:8000/swagger](http://localhost:8000/swagger)
 * Redoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
