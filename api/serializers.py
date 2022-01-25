@@ -6,7 +6,7 @@ from accounts.models import CustomUser
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ("id", "email", "username", "role", "password", "location")
+        fields = ("id", "username", "email", "role", "password", "location")
         extra_kwargs = {
             "password": {"write_only": True},
             "email": {"write_only": True},
@@ -45,3 +45,11 @@ class CarModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarModel
         fields = ("id", "car_brand", "name")
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    class Meta:
+        model = CustomUser
+
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)

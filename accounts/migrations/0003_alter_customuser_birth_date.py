@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0002_alter_customuser_role'),
+        ("accounts", "0002_alter_customuser_role"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='customuser',
-            name='birth_date',
+            model_name="customuser",
+            name="birth_date",
             field=models.DateField(blank=True, null=True),
         ),
     ]

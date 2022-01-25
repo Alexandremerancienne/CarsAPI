@@ -56,12 +56,13 @@ class CarBrand(SoftDeleteModel):
     def __str__(self):
         return f"{self.name.upper()}"
 
+
 class CarModelManager(models.Manager):
     def get_queryset(self):
         return (
             super(CarModelManager, self)
             .get_queryset()
-            .filter(car_brand__deleted_at__isnull=True)
+            .filter(deleted_at__isnull=True, car_brand__deleted_at__isnull=True)
         )
 
 
@@ -82,7 +83,6 @@ class CarModel(SoftDeleteModel):
 
 
 class UserCar(SoftDeleteModel):
-
     class Meta:
         verbose_name_plural = "Cars"
 

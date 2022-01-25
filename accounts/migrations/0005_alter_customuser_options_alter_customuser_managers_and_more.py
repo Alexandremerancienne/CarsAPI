@@ -7,32 +7,40 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0004_alter_customuser_options_alter_customuser_managers_and_more'),
+        (
+            "accounts",
+            "0004_alter_customuser_options_alter_customuser_managers_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='customuser',
-            options={'verbose_name': 'user', 'verbose_name_plural': 'users'},
+            name="customuser",
+            options={"verbose_name": "user", "verbose_name_plural": "users"},
         ),
         migrations.AlterModelManagers(
-            name='customuser',
+            name="customuser",
             managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
+                ("objects", django.contrib.auth.models.UserManager()),
             ],
         ),
         migrations.RemoveField(
-            model_name='customuser',
-            name='deleted_at',
+            model_name="customuser",
+            name="deleted_at",
         ),
         migrations.AddField(
-            model_name='customuser',
-            name='birth_date',
+            model_name="customuser",
+            name="birth_date",
             field=models.DateField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='role',
-            field=models.CharField(blank=True, choices=[('admin', 'Admin'), ('client', 'Client')], help_text='Role (Admin, Client)', max_length=10),
+            model_name="customuser",
+            name="role",
+            field=models.CharField(
+                blank=True,
+                choices=[("admin", "Admin"), ("client", "Client")],
+                help_text="Role (Admin, Client)",
+                max_length=10,
+            ),
         ),
     ]

@@ -9,30 +9,38 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('api', '0002_carbrand_deleted_at_carmodel_deleted_at_and_more'),
+        ("api", "0002_carbrand_deleted_at_carmodel_deleted_at_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='carbrand',
-            name='deleted_at',
+            model_name="carbrand",
+            name="deleted_at",
         ),
         migrations.RemoveField(
-            model_name='carmodel',
-            name='deleted_at',
+            model_name="carmodel",
+            name="deleted_at",
         ),
         migrations.RemoveField(
-            model_name='usercar',
-            name='deleted_at',
+            model_name="usercar",
+            name="deleted_at",
         ),
         migrations.AlterField(
-            model_name='carmodel',
-            name='car_brand',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.carbrand'),
+            model_name="carmodel",
+            name="car_brand",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="api.carbrand",
+            ),
         ),
         migrations.AlterField(
-            model_name='usercar',
-            name='user',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL),
+            model_name="usercar",
+            name="user",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

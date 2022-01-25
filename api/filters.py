@@ -7,15 +7,11 @@ class CarFilter(filters.FilterSet):
 
     odo_gte = filters.NumberFilter(field_name="odo", lookup_expr="gte")
     odo_lte = filters.NumberFilter(field_name="odo", lookup_expr="lte")
-    brand = filters.CharFilter(
-        field_name="car_brand", lookup_expr="name__iexact"
-    )
+    brand = filters.CharFilter(field_name="car_brand", lookup_expr="name__iexact")
     brand__contains = filters.CharFilter(
         field_name="car_brand", lookup_expr="name__icontains"
     )
-    model = filters.CharFilter(
-        field_name="car_model", lookup_expr="name__iexact"
-    )
+    model = filters.CharFilter(field_name="car_model", lookup_expr="name__iexact")
     model__contains = filters.CharFilter(
         field_name="car_model", lookup_expr="name__icontains"
     )

@@ -15,42 +15,94 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='CarBrand',
+            name="CarBrand",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=25)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=25)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
             options={
-                'verbose_name_plural': 'Brands',
+                "verbose_name_plural": "Brands",
             },
         ),
         migrations.CreateModel(
-            name='CarModel',
+            name="CarModel",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=25)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('car_brand', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.carbrand')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=25)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "car_brand",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="api.carbrand",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Models',
+                "verbose_name_plural": "Models",
             },
         ),
         migrations.CreateModel(
-            name='UserCar',
+            name="UserCar",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_reg', models.DateTimeField(auto_now_add=True)),
-                ('odo', models.IntegerField(blank=True, default=0, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('car_brand', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.carbrand')),
-                ('car_model', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.carmodel')),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_reg", models.DateTimeField(auto_now_add=True)),
+                ("odo", models.IntegerField(blank=True, default=0, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "car_brand",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="api.carbrand",
+                    ),
+                ),
+                (
+                    "car_model",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="api.carmodel",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Cars',
+                "verbose_name_plural": "Cars",
             },
         ),
     ]
