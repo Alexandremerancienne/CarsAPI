@@ -1,5 +1,5 @@
-# CarsApi: A simple REST API for cars
-CarsAPI is a RESTful API designed for users to manage cars.
+# CarsApi: A simple Python REST API for cars
+CarsAPI is a Python RESTful API designed for users to manage cars.
 
 # Authentication
 
