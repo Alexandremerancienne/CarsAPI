@@ -9,10 +9,10 @@ CarsAPI is a RESTful API designed for users to manage cars.
 * Besides the superuser, CarsApi users can be assigned two roles: Admin or Client.
 * The API data are manyfold. A user with credentials can access details of users, cars, brands and models.
 ## Users
-* To be created, a user must register on the API at the following endpoint: [http://localhost:8000/api/v1/register/](http://localhost:8000/api/v1/register/)
+* To be created, a user must register on the API at the following endpoint  (make sure the local server is running): [http://localhost:8000/api/v1/register/](http://localhost:8000/api/v1/register/)
 * Initially, a user has no role; a role can be assigned afterwards by the superuser or an Admin member.
 * Depending on its role, a user can have different access to the API ressources.
-* Once created, a user can modify its password if necessary at the following endpoint: [http://localhost:8000/api/v1/change_password/](http://localhost:8000/api/v1/change_password/)
+* Once created, a user can modify its password if necessary at the following endpoint  (make sure the local server is running): [http://localhost:8000/api/v1/change_password/](http://localhost:8000/api/v1/change_password/)
 * A user can modify its personnal data (username, mail, location) but not its role.
 * The role of a user can be modified by users with superior access rights: the superuser can change the role of an Admin member, and an Admin member can change the role of a Client.
 * The personnal data of a user can be modified only by this user.
@@ -81,3 +81,8 @@ You can search and filter models with the following endpoint: http://localhost:8
 
 # Endpoints test
 * Endpoints can be tested with tools such as Postman or cURL.
+
+# Documentation (Swagger/Redoc)
+* The documentation of the API is available at the following endpoints (make sure the local server is running):
+* Swagger: [http://localhost:8000/swagger](http://localhost:8000/swagger)
+* Redoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
