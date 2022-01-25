@@ -123,12 +123,13 @@ class CarViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = CarFilter
 
-    def list(self, request):
-        queryset = UserCar.objects.all()
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
         if self.request.user.role == "client" or (
             self.request.user.role == "" and not request.user.is_superuser
         ):
-            queryset = queryset.filter(user=request.user)
+            queryset.filter(user=request.user)
 
         serializer = UserCarSerializer(queryset, many=True)
         return Response(serializer.data)
