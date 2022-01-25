@@ -22,6 +22,6 @@ urlpatterns = [
     re_path(r"^", include(router.urls)),
     path("login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("login/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("registration/", include("dj_rest_auth.registration.urls")),
+    path("register/", include("dj_rest_auth.registration.urls")),
     path("change_password/", ChangePasswordView.as_view(), name="change-password"),
 ]

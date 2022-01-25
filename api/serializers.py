@@ -3,9 +3,16 @@ from .models import UserCar, CarModel, CarBrand
 from accounts.models import CustomUser
 
 
+class UpdateUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ("role",)
+
+
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
+
         fields = ("id", "username", "email", "role", "password", "location")
         extra_kwargs = {
             "password": {"write_only": True},

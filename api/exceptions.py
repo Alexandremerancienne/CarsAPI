@@ -31,3 +31,15 @@ class CannotCreateCarForAnotherUser(APIException):
     status_code = 403
     default_detail = "Missing Credentials: Cannot create a car for another user"
     default_code = "cannot_create_car_for_another_user"
+
+
+class CannotDeleteAnotherAdmin(APIException):
+    status_code = 403
+    default_detail = "Missing Credentials: Cannot delete another admin"
+    default_code = "cannot_delete_another_admin"
+
+
+class CannotUpdateSuperAdmin(APIException):
+    status_code = 403
+    default_detail = "Missing Credentials: Cannot update superadmin"
+    default_code = "cannot_update_super_admin"

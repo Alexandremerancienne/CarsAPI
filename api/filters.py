@@ -1,6 +1,31 @@
 from django_filters import rest_framework as filters
-from api.models import UserCar, CarBrand, CarModel
-from accounts.models import CustomUser
+from api.models import UserCar, CarModel, CarBrand
+
+
+class ModelFilter(filters.FilterSet):
+
+    name = filters.CharFilter(field_name="name", lookup_expr="iexact")
+    name_contains = filters.CharFilter(field_name="name", lookup_expr="icontains")
+
+    class Meta:
+        model = CarModel
+        fields = [
+            "name",
+            "name_contains",
+        ]
+
+
+class BrandFilter(filters.FilterSet):
+
+    name = filters.CharFilter(field_name="name", lookup_expr="iexact")
+    name_contains = filters.CharFilter(field_name="name", lookup_expr="icontains")
+
+    class Meta:
+        model = CarBrand
+        fields = [
+            "name",
+            "name_contains",
+        ]
 
 
 class CarFilter(filters.FilterSet):

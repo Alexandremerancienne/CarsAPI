@@ -11,8 +11,9 @@ from .serializers import (
     CarBrandSerializer,
     CarModelSerializer,
     ChangePasswordSerializer,
+    UpdateUserSerializer,
 )
-from .filters import CarFilter
+from .filters import CarFilter, ModelFilter, BrandFilter
 from .permissions import (
     IsSuperuserOrAdminOrCarUser,
     IsSuperuserOrAdmin,
@@ -24,6 +25,8 @@ from .exceptions import (
     NoPairBrandModel,
     CannotCreateOrEditCarForSuperUserOrAnotherAdmin,
     CannotCreateCarForAnotherUser,
+    CannotDeleteAnotherAdmin,
+    CannotUpdateSuperAdmin,
 )
 
 
@@ -33,11 +36,28 @@ from rest_framework import generics
 class CustomUserViewSet(viewsets.ModelViewSet):
 
     queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
     permission_classes = (
         IsAuthenticated,
         IsSuperuserOrSelfAdminOrAnonymousUser,
     )
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return CustomUserSerializer
+        if self.action == "retrieve":
+            return CustomUserSerializer
+        if self.action == "update":
+            retrieved_user = get_object_or_404(CustomUser, id=self.kwargs["pk"])
+            if (
+                self.request.user.role == "admin" or self.request.user.is_superuser
+            ) and retrieved_user.role == "client":
+                return UpdateUserSerializer
+            if not self.request.user.is_superuser and retrieved_user.is_superuser:
+                return UpdateUserSerializer
+
+            if retrieved_user == self.request.user:
+                return CustomUserSerializer
+        return CustomUserSerializer
 
     def list(self, request):
         queryset = CustomUser.objects.all().order_by("id")
@@ -55,6 +75,41 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         serializer = CustomUserSerializer(retrieved_user)
         return Response(serializer.data)
 
+    def destroy(self, request, pk=None):
+        request_user = request.user
+        retrieved_user = get_object_or_404(CustomUser, id=pk)
+        if request_user.role == "admin":
+            if retrieved_user.is_superuser or (
+                retrieved_user.role == "admin" and retrieved_user.id != request_user.id
+            ):
+                raise CannotDeleteAnotherAdmin()
+
+        self.check_object_permissions(request, retrieved_user)
+        self.perform_destroy(retrieved_user)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def update(self, request, pk=None):
+        request_user = request.user
+        retrieved_user = get_object_or_404(CustomUser, id=pk)
+        self.check_object_permissions(request, retrieved_user)
+
+        if request_user.is_superuser:
+            serializer = UpdateUserSerializer(retrieved_user)
+        elif request_user.role == "admin" and retrieved_user.is_superuser:
+            raise CannotUpdateSuperAdmin()
+        elif request_user.role == "admin" and (
+            retrieved_user.role != "admin" and not retrieved_user.is_superuser
+        ):
+            serializer = UpdateUserSerializer(retrieved_user)
+        elif request_user.role == "admin" and retrieved_user == request_user:
+            serializer = CustomUserSerializer(retrieved_user)
+        else:
+            raise IsSuperuserOrSelfAdminOrAnonymousUser()
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
 
 class CarViewSet(viewsets.ModelViewSet):
 
@@ -65,11 +120,11 @@ class CarViewSet(viewsets.ModelViewSet):
         IsSuperuserOrAdminOrCarUser,
     )
 
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = [filters.DjangoFilterBackend]
     filterset_class = CarFilter
 
     def list(self, request):
-        queryset = UserCar.objects.all().order_by("id")
+        queryset = UserCar.objects.all()
         if self.request.user.role == "client" or (
             self.request.user.role == "" and not request.user.is_superuser
         ):
@@ -80,8 +135,6 @@ class CarViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         retrieved_car = get_object_or_404(UserCar, id=pk)
-        print(retrieved_car)
-        print(self.request.user.role)
         if (
             self.request.user.role == "client" and retrieved_car.user != request.user
         ) or (self.request.user.role == "" and not request.user.is_superuser):
@@ -109,7 +162,6 @@ class CarViewSet(viewsets.ModelViewSet):
 
         if request_user.role == "client":
             car_user = request_copy["user"]
-            print(car_user)
             user = CustomUser.objects.filter(id=car_user)
             if (
                 user.first().role != "client"
@@ -171,6 +223,9 @@ class CarBrandViewSet(viewsets.ModelViewSet):
         IsSuperuserOrAdmin,
     )
 
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = BrandFilter
+
     def destroy(self, request, pk=None):
         brand = get_object_or_404(CarBrand, id=pk)
         queryset = CarModel.objects.all().filter(car_brand=brand)
@@ -189,6 +244,9 @@ class CarModelViewSet(viewsets.ModelViewSet):
         IsAuthenticated,
         IsSuperuserOrAdmin,
     )
+
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = ModelFilter
 
 
 class ChangePasswordView(generics.UpdateAPIView):
